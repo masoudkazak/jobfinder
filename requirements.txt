@@ -24,3 +24,5 @@ python-decouple
 sentry-sdk[django]
 drf-spectacular
 whitenoise
+ipython
+django-extensions
