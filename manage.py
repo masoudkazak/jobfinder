@@ -1,10 +1,12 @@
 import os
 import sys
 
+from decouple import config
+
 
 def main():
     """Run administrative tasks."""
-    django_env = os.getenv("ENVIRONMENT", "dev")
+    django_env = config("ENVIRONMENT", "dev")
     if django_env == "dev":
         os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.dev")
     else:
