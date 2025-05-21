@@ -1,28 +1,32 @@
-FROM python:3.11-slim
-
-RUN mkdir /app
+FROM python:3.11-slim as builder
 
 WORKDIR /app
 
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-
-RUN grep -qxF 'clear && cat /karsaz/ecommerce.asci' /root/.bashrc || \
-    echo 'clear && cat /karsaz/ecommerce.asci' >> /root/.bashrc && \
-    apt-get update && \
+RUN apt-get update && \
     apt-get install -y --no-install-recommends build-essential libpq-dev && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY ./requirements.txt .
 
-RUN pip install --no-cache-dir \
+RUN pip install --user --no-cache-dir \
     --index-url https://mirrors.aliyun.com/pypi/simple/ \
     --trusted-host mirrors.aliyun.com \
     -r requirements.txt
 
-COPY . /app
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY --from=builder /root/.local /root/.local
+COPY . .
+
+ENV PATH=/root/.local/bin:$PATH \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+RUN grep -qxF 'clear && cat /karsaz/ecommerce.asci' /root/.bashrc || \
+    echo 'clear && cat /karsaz/ecommerce.asci' >> /root/.bashrc
 
 RUN chmod +x docker/django/entrypoint.sh
-
 ENTRYPOINT ["docker/django/entrypoint.sh"]
