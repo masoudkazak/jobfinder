@@ -12,3 +12,5 @@ shell:
 	docker exec -it karsaz python manage.py shell_plus
 makemigrations:
 	docker exec -it karsaz python manage.py makemigrations
+superuser:
+	docker exec -it karsaz python manage.py createsuperuser

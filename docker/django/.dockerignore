@@ -7,11 +7,6 @@ venv/
 .gitlab-ci.yml
 .gitlab-variables.yaml
 
-compose.yaml
-compose.test.yaml
-
-sample-rent.env
-
 log
 
 README.md
