@@ -33,6 +33,7 @@ select = [
 ignore = [
   "E501",
   "DJ001",
+  "S101",
 ]
 
 [mccabe]
