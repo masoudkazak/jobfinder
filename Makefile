@@ -21,3 +21,5 @@ psql:
   	bash -c "PGPASSWORD=$$POSTGRES_PASSWORD psql -U $$POSTGRES_USER -d $$POSTGRES_DB"
 pytest:
 	docker exec karsaz pytest .
+ruff:
+	docker exec karsaz ruff check .
