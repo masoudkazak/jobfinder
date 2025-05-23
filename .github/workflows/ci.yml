@@ -39,7 +39,12 @@ jobs:
 
       - name: Show application logs (on failure only)
         if: failure()
-        run: docker logs karsaz
+        run: |
+          if docker ps -a --format '{{.Names}}' | grep -q '^karsaz$'; then
+            docker logs karsaz
+          else
+            echo "Container karsaz does not exist."
+          fi
 
       - name: Stop containers
         if: always()
