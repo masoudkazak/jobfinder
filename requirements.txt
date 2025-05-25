@@ -26,5 +26,6 @@ drf-spectacular
 whitenoise
 ipython
 django-extensions
+black==25.1.0
 django-redis
 django-celery-beat

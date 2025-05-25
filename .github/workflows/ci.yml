@@ -13,27 +13,39 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Create .env file if not exists
-        run: |
-          if [ ! -f .env ]; then
-            cp .env.example .env
-          fi
+      - name: Copy .env.example to .env
+        run: cp .env.example .env
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
+      - name: Build and start containers
+        run: make build
 
-      - name: Install dependencies
+      - name: Wait for PostgreSQL to be ready
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          echo "Waiting for PostgreSQL to be ready..."
+          for i in {1..15}; do
+            docker exec postgres pg_isready && echo "PostgreSQL is ready!" && break
+            echo "Waiting..."
+            sleep 2
+          done
 
       - name: Run tests
-        run: pytest
+        run: make pytest
 
       - name: Run ruff
-        run: ruff .
+        run: make ruff
 
       - name: Run black check
-        run: black . --check --diff
+        run: docker exec karsaz black . --check --diff
+
+      - name: Show application logs (on failure only)
+        if: failure()
+        run: |
+          if docker ps -a --format '{{.Names}}' | grep -q '^karsaz$'; then
+            docker logs karsaz
+          else
+            echo "Container karsaz does not exist."
+          fi
+
+      - name: Stop containers
+        if: always()
+        run: make down
