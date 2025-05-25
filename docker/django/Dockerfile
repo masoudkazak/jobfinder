@@ -3,9 +3,13 @@ FROM python:3.11-slim as builder
 WORKDIR /app
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends build-essential libpq-dev && \
+    apt-get install -y --no-install-recommends \
+        build-essential \
+        libpq-dev \
+        netcat-openbsd && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 
 COPY ./requirements.txt .
 
@@ -18,15 +22,22 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends netcat-openbsd && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 COPY --from=builder /root/.local /root/.local
 COPY . .
+
 
 ENV PATH=/root/.local/bin:$PATH \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
-RUN grep -qxF 'clear && cat /karsaz/ecommerce.asci' /root/.bashrc || \
-    echo 'clear && cat /karsaz/ecommerce.asci' >> /root/.bashrc
+RUN grep -qxF 'clear && cat ./ecommerce.asci' /root/.bashrc || \
+    echo 'clear && cat ./ecommerce.asci' >> /root/.bashrc
 
+RUN chmod +x docker/celery/celery-entrypoint.sh
 RUN chmod +x docker/django/entrypoint.sh
 ENTRYPOINT ["docker/django/entrypoint.sh"]

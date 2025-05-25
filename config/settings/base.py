@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     "apps.core",
     "django_extensions",
     "rest_framework_simplejwt",
+    "django_celery_beat",
 ]
 
 MIDDLEWARE = [
@@ -108,4 +109,14 @@ SIMPLE_JWT = {
     "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
     "USER_ID_FIELD": "id",
     "USER_ID_CLAIM": "user_id",
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": config("REDIS_BACKEND"),
+        "LOCATION": config("REDIS_LOCATION"),
+        "OPTIONS": {
+            "CLIENT_CLASS": config("REDIS_CLIENT_CLASS"),
+        },
+    }
 }

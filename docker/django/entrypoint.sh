@@ -5,7 +5,7 @@ set -e
 python manage.py wait_for_db
 python manage.py migrate --noinput
 
-cat /karsaz/ecommerce.asci || echo "ascii file not found."
+cat ./ecommerce.asci || echo "ascii file not found."
 
 if [ "$ENVIRONMENT" = "dev" ]; then
   python manage.py runserver 0.0.0.0:8000

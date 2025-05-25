@@ -26,3 +26,5 @@ drf-spectacular
 whitenoise
 ipython
 django-extensions
+django-redis
+django-celery-beat
