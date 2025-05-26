@@ -13,6 +13,9 @@ class UserRetrieveSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "email",
+            "is_client",
+            "is_freelancer",
+            "is_active",
         )
 
 
@@ -24,6 +27,9 @@ class UserLoginSerializer(TokenObtainPairSerializer):
         data["first_name"] = self.user.first_name
         data["last_name"] = self.user.last_name
         data["email"] = self.user.email
+        data["is_client"] = self.user.is_client
+        data["is_freelancer"] = self.user.is_freelancer
+        data["is_active"] = self.user.is_active
 
         return data
 
@@ -43,6 +49,8 @@ class UserCreateSerializer(serializers.ModelSerializer):
             "email",
             "password",
             "password2",
+            "is_client",
+            "is_freelancer",
         )
 
     def validate(self, attrs):
@@ -59,6 +67,8 @@ class UserCreateSerializer(serializers.ModelSerializer):
             email=validated_data.get("email", ""),
             first_name=validated_data.get("first_name", ""),
             last_name=validated_data.get("last_name", ""),
+            is_client=validated_data.get("is_client", False),
+            is_freelancer=validated_data.get("is_freelancer", False),
         )
         user.set_password(validated_data["password"])
         user.save()

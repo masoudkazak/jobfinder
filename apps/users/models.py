@@ -13,8 +13,6 @@ class User(AbstractUser):
     id = models.UUIDField(
         auto_created=True, primary_key=True, default=uuid.uuid4, editable=False
     )
-    is_customer = models.BooleanField(default=True)
-    is_admin = models.BooleanField(default=False)
     username = CICharField(
         max_length=150,
         unique=True,
@@ -25,6 +23,8 @@ class User(AbstractUser):
         },
     )
     email = CICharField(unique=True)
+    is_client = models.BooleanField(default=False)
+    is_freelancer = models.BooleanField(default=False)
 
     class Meta:
         indexes = (
