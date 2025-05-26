@@ -20,6 +20,6 @@ psql:
 	docker exec -it postgres \
   	bash -c "PGPASSWORD=$$POSTGRES_PASSWORD psql -U $$POSTGRES_USER -d $$POSTGRES_DB"
 pytest:
-	docker exec karsaz pytest .
+	docker exec karsaz pytest . --reuse-db
 ruff:
 	docker exec karsaz ruff check .
