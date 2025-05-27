@@ -15,7 +15,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "apps.users",
     "apps.core",
-    "apps.projects",
     "django_extensions",
     "rest_framework_simplejwt",
     "django_celery_beat",
@@ -86,8 +85,6 @@ USE_I18N = True
 USE_TZ = True
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-AUTH_USER_MODEL = "users.User"
 
 SHELL_PLUS = "ipython"
 

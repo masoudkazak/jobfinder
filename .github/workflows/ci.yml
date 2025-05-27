@@ -1,4 +1,4 @@
-name: karsaz
+name: JobFinder
 
 on:
   push:
@@ -35,15 +35,15 @@ jobs:
         run: make ruff
 
       - name: Run black check
-        run: docker exec karsaz black . --check --diff
+        run: docker exec django-api black . --check --diff
 
       - name: Show application logs (on failure only)
         if: failure()
         run: |
-          if docker ps -a --format '{{.Names}}' | grep -q '^karsaz$'; then
-            docker logs karsaz
+          if docker ps -a --format '{{.Names}}' | grep -q '^django-api$'; then
+            docker logs django-api
           else
-            echo "Container karsaz does not exist."
+            echo "Container django-api does not exist."
           fi
 
       - name: Stop containers
