@@ -15,6 +15,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "apps.users",
     "apps.core",
+    "apps.jobs",
     "django_extensions",
     "rest_framework_simplejwt",
     "django_celery_beat",
