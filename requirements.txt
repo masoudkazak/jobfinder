@@ -15,7 +15,6 @@ celery
 redis
 kombu
 amqp
-minio
 django-storages[boto3]
 boto3
 ruff
@@ -26,7 +25,6 @@ pytest-asyncio
 coverage
 pytest-cov
 python-decouple
-sentry-sdk[django]
 drf-spectacular
 whitenoise
 ipython
@@ -34,9 +32,6 @@ django-extensions
 black
 django-redis
 django-celery-beat
-fastapi>=0.110
-uvicorn[standard]>=0.29
-aiogram>=3.3
 requests
 beautifulsoup4
 lxml

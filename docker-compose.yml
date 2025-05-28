@@ -16,6 +16,19 @@ services:
       - redis
       - rabbitmq
 
+  fastapi:
+    build:
+      context: .
+      dockerfile: docker/fastapi/Dockerfile
+    container_name: fastapi
+    restart: always
+    ports:
+      - "8001:8001"
+    volumes:
+        - .:/code
+    depends_on:
+      - django-api
+
   celery:
     build:
       context: .
