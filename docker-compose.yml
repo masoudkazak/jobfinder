@@ -24,8 +24,10 @@ services:
     restart: always
     ports:
       - "8001:8001"
+    env_file:
+      - .env
     volumes:
-        - .:/code
+        - .:/app
     depends_on:
       - django-api
 
