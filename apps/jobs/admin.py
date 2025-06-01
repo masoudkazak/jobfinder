@@ -14,7 +14,7 @@ class SkillAdmin(admin.ModelAdmin):
 
 @admin.register(JobPosting)
 class JobPostingAdmin(admin.ModelAdmin):
-    list_display = ("title", "company", "location", "is_remote", "source", "posted_at")
+    list_display = ("title", "company", "province", "is_remote", "source", "posted_at")
     search_fields = ("title", "company", "description")
     list_filter = ("source", "is_remote", "job_type", "seniority_level")
     filter_horizontal = ("skills",)

@@ -1,5 +1,7 @@
 from django.db import models
 
+from apps.core.models import Province
+
 
 class Skill(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -19,7 +21,7 @@ class JobPosting(models.Model):
     )
     title = models.CharField(max_length=255)
     company = models.CharField(max_length=255)
-    location = models.CharField(max_length=255, blank=True, null=True)
+    province = models.ForeignKey(Province, on_delete=models.SET_NULL, null=True)
     is_remote = models.BooleanField(default=False)
 
     description = models.TextField()
@@ -32,7 +34,6 @@ class JobPosting(models.Model):
             ("part_time", "پاره‌وقت"),
             ("contract", "قراردادی"),
             ("internship", "کارآموزی"),
-            ("freelance", "فریلنس"),
         ],
     )
 
@@ -61,7 +62,7 @@ class JobPosting(models.Model):
         indexes = (
             models.Index(fields=["title"]),
             models.Index(fields=["company"]),
-            models.Index(fields=["location"]),
+            models.Index(fields=["province"]),
         )
 
     def __str__(self):

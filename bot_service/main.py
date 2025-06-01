@@ -4,7 +4,7 @@ from aiogram import Bot, Dispatcher
 from decouple import config
 from fastapi import FastAPI
 
-from .handlers import router
+from .handlers.filters import router
 
 bot = Bot(token=config("BOTFATHER_API_TOKEN"))
 dp = Dispatcher()

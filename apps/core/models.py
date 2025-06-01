@@ -8,3 +8,10 @@ class TimeStampedModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+class Province(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name

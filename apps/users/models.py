@@ -16,7 +16,7 @@ class UserFilterPreference(TimeStampedModel):
     last_name = models.CharField(max_length=150, blank=True, null=True)
 
     skills = models.ManyToManyField(Skill, blank=True)
-    locations = models.JSONField(default=list, blank=True)
+    province = models.JSONField(default=list, blank=True)
     remote_only = models.BooleanField(default=False)
     job_types = models.JSONField(default=list, blank=True)
     seniorities = models.JSONField(default=list, blank=True)
