@@ -147,14 +147,29 @@ async def change_province_page(callback: types.CallbackQuery):
 @router.callback_query(F.data.startswith("province_select:"))
 async def select_province(callback: types.CallbackQuery, state: FSMContext):
     province = callback.data.split(":")[1]
+
+    if province == "همه استان ها":
+        await state.update_data(province=["همه استان ها"])
+        await state.set_state(FilterStates.filling_filters)
+        await callback.message.answer("✅ همه استان‌ها انتخاب شد.")
+        await callback.message.answer(
+            "فیلتر بعدی رو انتخاب کن:", reply_markup=filters.filter_menu_keyboard()
+        )
+        await callback.answer()
+        return
+
     data = await state.get_data()
     province_list = data.get("province", [])
-    if province == "همه استان ها":
-        province_list = [province]
-    elif province not in province_list and "همه استان ها" not in province_list:
+
+    if "همه استان ها" in province_list:
+        province_list.remove("همه استان ها")
         province_list.append(province)
-    await state.update_data(province=province_list)
-    await callback.answer("✅ استان ذخیره شد")
+
+    if province not in province_list:
+        province_list.append(province)
+        await state.update_data(province=province_list)
+
+    await callback.answer(f"✅ '{province}' ذخیره شد.")
 
 
 @router.callback_query(F.data == "province_done")
