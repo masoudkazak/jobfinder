@@ -13,17 +13,29 @@ def filter_menu_keyboard():
     keyboard.button(text="دورکاری", callback_data="filter:remote")
     keyboard.button(text="استان", callback_data="filter:province")
     keyboard.button(text="سطح تجربه", callback_data="filter:level")
-    keyboard.button(text="ثبت", callback_data="filter:done")
+    keyboard.button(text="مهارت‌ها", callback_data="filter:skills")
+    keyboard.button(text="حقوق", callback_data="filter:salary")
+
+    keyboard.button(text="✅ ثبت فیلترها", callback_data="filter:done")
+
     keyboard.adjust(2)
     return keyboard.as_markup()
 
 
-def contract_type_keyboard():
+def contract_type_keyboard(selected: list[str] = None, with_done: bool = True):
+    selected = selected or []
+    options = [
+        ("تمام‌وقت", "full"),
+        ("پاره‌وقت", "part"),
+        ("پروژه‌ای", "project"),
+        ("کارآموزی", "intern"),
+    ]
     keyboard = InlineKeyboardBuilder()
-    keyboard.button(text="تمام‌وقت", callback_data="contract:full")
-    keyboard.button(text="پاره‌وقت", callback_data="contract:part")
-    keyboard.button(text="پروژه‌ای", callback_data="contract:project")
-    keyboard.button(text="کارآموزی", callback_data="contract:intern")
+    for label, key in options:
+        check = "✅ " if key in selected else ""
+        keyboard.button(text=check + label, callback_data=f"contract:{key}")
+    if with_done:
+        keyboard.button(text="🔚 پایان", callback_data="contract_done")
     keyboard.adjust(2)
     return keyboard.as_markup()
 
@@ -36,22 +48,34 @@ def remote_type_keyboard():
     return keyboard.as_markup()
 
 
-def level_keyboard():
+def level_keyboard(selected: list[str] = None, with_done: bool = True):
+    selected = selected or []
+    levels = [("Junior", "junior"), ("Mid", "mid"), ("Senior", "senior")]
     keyboard = InlineKeyboardBuilder()
-    keyboard.button(text="Junior", callback_data="level:junior")
-    keyboard.button(text="Mid", callback_data="level:mid")
-    keyboard.button(text="Senior", callback_data="level:senior")
+    for label, key in levels:
+        check = "✅ " if key in selected else ""
+        keyboard.button(text=check + label, callback_data=f"level:{key}")
+    if with_done:
+        keyboard.button(text="🔚 پایان", callback_data="level_done")
     keyboard.adjust(3)
     return keyboard.as_markup()
 
 
-def get_province_keyboard(page=0, per_page=5):
+def get_province_keyboard(
+    page=0, per_page=6, selected: list[str] = None, with_done=True
+):
+    selected = selected or []
     start = page * per_page
     end = start + per_page
     current_page = provinces[start:end]
 
     keyboard = [
-        [InlineKeyboardButton(text=prov, callback_data=f"province_select:{prov}")]
+        [
+            InlineKeyboardButton(
+                text=("✅ " if prov in selected else "") + prov,
+                callback_data=f"province_select:{prov}",
+            )
+        ]
         for prov in current_page
     ]
 
@@ -68,8 +92,23 @@ def get_province_keyboard(page=0, per_page=5):
                 text="➡️ بعدی", callback_data=f"province_page:{page + 1}"
             )
         )
-
     if nav_buttons:
         keyboard.append(nav_buttons)
-
+    if with_done:
+        keyboard.append(
+            [InlineKeyboardButton(text="🔚 پایان", callback_data="province_done")]
+        )
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+
+def skill_done_keyboard():
+    keyboard = InlineKeyboardBuilder()
+    keyboard.button(text="🔚 پایان", callback_data="skills_done")
+    return keyboard.as_markup()
+
+
+def salary_type_keyboard():
+    keyboard = InlineKeyboardBuilder()
+    keyboard.button(text="توافقی", callback_data="salary:negotiable")
+    keyboard.button(text="ثابت", callback_data="salary:fixed")
+    return keyboard.as_markup()

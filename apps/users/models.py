@@ -4,7 +4,7 @@ from apps.core.models import TimeStampedModel
 from apps.jobs.models import Skill
 
 
-class UserFilterPreference(TimeStampedModel):
+class TelegramUser(TimeStampedModel):
     SLARY_TYPE_CHOICES = (
         ("fixed", "قیمت ثابت"),
         ("negotiable", "توافقی"),
@@ -12,8 +12,6 @@ class UserFilterPreference(TimeStampedModel):
 
     telegram_id = models.BigIntegerField(unique=True)
     username = models.CharField(max_length=150, blank=True, null=True)
-    first_name = models.CharField(max_length=150, blank=True, null=True)
-    last_name = models.CharField(max_length=150, blank=True, null=True)
 
     skills = models.ManyToManyField(Skill, blank=True)
     province = models.JSONField(default=list, blank=True)
