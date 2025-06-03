@@ -1,6 +1,8 @@
 from aiogram import F, Router, types
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
+from decouple import config
+import httpx
 
 from ..keyboards import filters
 from .states import FilterStates
@@ -274,13 +276,20 @@ async def get_salary_max(message: types.Message, state: FSMContext):
 @router.callback_query(F.data == "filter:done")
 async def finalize_filters(callback: types.CallbackQuery, state: FSMContext):
     data = await state.get_data()
-    user_id = callback.from_user
+    user_data = {
+        "user_id": callback.from_user.id,
+        "username": callback.from_user.username,
+    }
 
-    await save_user_filter_to_db(user_id, data)
+    await save_user_filter_to_db(user_data=user_data, filters=data)
     await state.clear()
     await callback.message.answer("✅ فیلترها با موفقیت ذخیره شدند.")
     await callback.answer()
 
 
-async def save_user_filter_to_db(user_id: int, filters: dict):
-    print(f"[DEBUG] Save to DB: user_id={user_id}, filters={filters}")
+async def save_user_filter_to_db(user_data: dict, filters: dict):
+    async with httpx.AsyncClient() as client:
+        await client.post(
+            f"{config('DJANGO_API_URL')}/api/users/create-update-telegram-user/",
+            json=user_data | filters,
+        )

@@ -1,6 +1,6 @@
 from django.db import models
 
-from apps.core.models import Province
+from apps.core.models import Province, TimeStampedModel
 
 
 class Skill(models.Model):
@@ -14,7 +14,7 @@ class Skill(models.Model):
         return self.name
 
 
-class JobPosting(models.Model):
+class JobPosting(TimeStampedModel):
     SLARY_TYPE_CHOICES = (
         ("fixed", "قیمت ثابت"),
         ("negotiable", "توافقی"),
