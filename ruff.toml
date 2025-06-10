@@ -34,6 +34,7 @@ ignore = [
   "E501",
   "DJ001",
   "S101",
+  "RUF001"
 ]
 
 [mccabe]

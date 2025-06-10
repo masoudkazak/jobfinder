@@ -7,10 +7,10 @@ import httpx
 from ..keyboards import filters
 from .states import FilterStates
 
-router = Router()
+filter_router = Router()
 
 
-@router.message(Command("filter"))
+@filter_router.message(Command("filter"))
 async def start_filtering(message: types.Message, state: FSMContext):
     await state.clear()
     await state.set_state(FilterStates.filling_filters)
@@ -21,14 +21,14 @@ async def start_filtering(message: types.Message, state: FSMContext):
 
 
 # Title
-@router.callback_query(F.data == "filter:title")
+@filter_router.callback_query(F.data == "filter:title")
 async def title_value(callback: types.CallbackQuery, state: FSMContext):
     await callback.message.edit_text("عنوان شغلی را وارد کنید:")
     await state.set_state(FilterStates.typing_title)
     await callback.answer()
 
 
-@router.message(FilterStates.typing_title)
+@filter_router.message(FilterStates.typing_title)
 async def receive_title(message: types.Message, state: FSMContext):
     title = message.text.strip()
 
@@ -42,7 +42,7 @@ async def receive_title(message: types.Message, state: FSMContext):
 
 
 # Contract
-@router.callback_query(F.data == "filter:contract")
+@filter_router.callback_query(F.data == "filter:contract")
 async def contract_options(callback: types.CallbackQuery):
     await callback.message.edit_text(
         "نوع همکاری را انتخاب کنید:",
@@ -51,7 +51,7 @@ async def contract_options(callback: types.CallbackQuery):
     await callback.answer()
 
 
-@router.callback_query(F.data.startswith("contract:"))
+@filter_router.callback_query(F.data.startswith("contract:"))
 async def select_contract(callback: types.CallbackQuery, state: FSMContext):
     value = callback.data.split(":")[1]
     data = await state.get_data()
@@ -62,7 +62,7 @@ async def select_contract(callback: types.CallbackQuery, state: FSMContext):
     await callback.answer("✅ اضافه شد")
 
 
-@router.callback_query(F.data == "contract_done")
+@filter_router.callback_query(F.data == "contract_done")
 async def done_contract(callback: types.CallbackQuery, state: FSMContext):
     await state.set_state(FilterStates.filling_filters)
     await callback.message.answer(
@@ -72,7 +72,7 @@ async def done_contract(callback: types.CallbackQuery, state: FSMContext):
 
 
 # Remote
-@router.callback_query(F.data == "filter:remote")
+@filter_router.callback_query(F.data == "filter:remote")
 async def show_remote_options(callback: types.CallbackQuery):
     await callback.message.edit_text(
         "دورکاری", reply_markup=filters.remote_type_keyboard()
@@ -80,7 +80,7 @@ async def show_remote_options(callback: types.CallbackQuery):
     await callback.answer()
 
 
-@router.callback_query(F.data.startswith("remote:"))
+@filter_router.callback_query(F.data.startswith("remote:"))
 async def select_remote(callback: types.CallbackQuery, state: FSMContext):
     value = callback.data.split(":")[1]
     if value == "yes":
@@ -98,7 +98,7 @@ async def select_remote(callback: types.CallbackQuery, state: FSMContext):
 
 
 # level
-@router.callback_query(F.data == "filter:level")
+@filter_router.callback_query(F.data == "filter:level")
 async def show_level_options(callback: types.CallbackQuery):
     await callback.message.edit_text(
         "سطح تجربه را انتخاب کنید:", reply_markup=filters.level_keyboard(with_done=True)
@@ -106,7 +106,7 @@ async def show_level_options(callback: types.CallbackQuery):
     await callback.answer()
 
 
-@router.callback_query(F.data.startswith("level:"))
+@filter_router.callback_query(F.data.startswith("level:"))
 async def select_level(callback: types.CallbackQuery, state: FSMContext):
     value = callback.data.split(":")[1]
     data = await state.get_data()
@@ -117,7 +117,7 @@ async def select_level(callback: types.CallbackQuery, state: FSMContext):
     await callback.answer("✅ اضافه شد")
 
 
-@router.callback_query(F.data == "level_done")
+@filter_router.callback_query(F.data == "level_done")
 async def done_level(callback: types.CallbackQuery, state: FSMContext):
     await state.set_state(FilterStates.filling_filters)
     await callback.message.answer(
@@ -127,7 +127,7 @@ async def done_level(callback: types.CallbackQuery, state: FSMContext):
 
 
 # province
-@router.callback_query(F.data == "filter:province")
+@filter_router.callback_query(F.data == "filter:province")
 async def show_provinces(callback: types.CallbackQuery):
     await callback.message.edit_text(
         "استان موردنظر را انتخاب کنید:",
@@ -136,7 +136,7 @@ async def show_provinces(callback: types.CallbackQuery):
     await callback.answer()
 
 
-@router.callback_query(F.data.startswith("province_page:"))
+@filter_router.callback_query(F.data.startswith("province_page:"))
 async def change_province_page(callback: types.CallbackQuery):
     page = int(callback.data.split(":")[1])
     await callback.message.edit_text(
@@ -146,7 +146,7 @@ async def change_province_page(callback: types.CallbackQuery):
     await callback.answer()
 
 
-@router.callback_query(F.data.startswith("province_select:"))
+@filter_router.callback_query(F.data.startswith("province_select:"))
 async def select_province(callback: types.CallbackQuery, state: FSMContext):
     province = callback.data.split(":")[1]
 
@@ -174,7 +174,7 @@ async def select_province(callback: types.CallbackQuery, state: FSMContext):
     await callback.answer(f"✅ '{province}' ذخیره شد.")
 
 
-@router.callback_query(F.data == "province_done")
+@filter_router.callback_query(F.data == "province_done")
 async def done_province(callback: types.CallbackQuery, state: FSMContext):
     await state.set_state(FilterStates.filling_filters)
     await callback.message.answer(
@@ -184,7 +184,7 @@ async def done_province(callback: types.CallbackQuery, state: FSMContext):
 
 
 # Skills
-@router.callback_query(F.data == "filter:skills")
+@filter_router.callback_query(F.data == "filter:skills")
 async def ask_for_skill(callback: types.CallbackQuery, state: FSMContext):
     await callback.message.edit_text(
         "مهارت‌هات رو یکی یکی بنویس و بعد از هر مورد ارسال کن. وقتی تموم شد، روی دکمه زیر بزن:",
@@ -194,7 +194,7 @@ async def ask_for_skill(callback: types.CallbackQuery, state: FSMContext):
     await callback.answer()
 
 
-@router.message(FilterStates.typing_skill)
+@filter_router.message(FilterStates.typing_skill)
 async def collect_skills(message: types.Message, state: FSMContext):
     skill = message.text.strip()
     data = await state.get_data()
@@ -205,7 +205,7 @@ async def collect_skills(message: types.Message, state: FSMContext):
         await message.answer(f"✅ '{skill}' ذخیره شد. ادامه بده یا روی 🔚 پایان بزن.")
 
 
-@router.callback_query(F.data == "skills_done")
+@filter_router.callback_query(F.data == "skills_done")
 async def done_typing_skills(callback: types.CallbackQuery, state: FSMContext):
     data = await state.get_data()
     skills = data.get("skills", [])
@@ -223,7 +223,7 @@ async def done_typing_skills(callback: types.CallbackQuery, state: FSMContext):
 
 
 # Salary
-@router.callback_query(F.data == "filter:salary")
+@filter_router.callback_query(F.data == "filter:salary")
 async def ask_salary_type(callback: types.CallbackQuery, state: FSMContext):
     await callback.message.edit_text(
         "نوع حقوق را انتخاب کنید:", reply_markup=filters.salary_type_keyboard()
@@ -231,7 +231,7 @@ async def ask_salary_type(callback: types.CallbackQuery, state: FSMContext):
     await callback.answer()
 
 
-@router.callback_query(F.data.startswith("salary:"))
+@filter_router.callback_query(F.data.startswith("salary:"))
 async def handle_salary(callback: types.CallbackQuery, state: FSMContext):
     salary_type = callback.data.split(":")[1]
     if salary_type == "negotiable":
@@ -246,7 +246,7 @@ async def handle_salary(callback: types.CallbackQuery, state: FSMContext):
     await callback.answer()
 
 
-@router.message(FilterStates.typing_salary_min)
+@filter_router.message(FilterStates.typing_salary_min)
 async def get_salary_min(message: types.Message, state: FSMContext):
     try:
         salary_min = int(message.text)
@@ -257,7 +257,7 @@ async def get_salary_min(message: types.Message, state: FSMContext):
         await message.answer("مقدار معتبر وارد کن (عدد تومان)")
 
 
-@router.message(FilterStates.typing_salary_max)
+@filter_router.message(FilterStates.typing_salary_max)
 async def get_salary_max(message: types.Message, state: FSMContext):
     try:
         salary_max = int(message.text)
@@ -273,7 +273,7 @@ async def get_salary_max(message: types.Message, state: FSMContext):
         await message.answer("عدد معتبر وارد کن")
 
 
-@router.callback_query(F.data == "filter:done")
+@filter_router.callback_query(F.data == "filter:done")
 async def finalize_filters(callback: types.CallbackQuery, state: FSMContext):
     data = await state.get_data()
     user_data = {

@@ -1,9 +1,7 @@
-# bot/keyboards/filters.py
-
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from bot_service.utils.constant import PROVINCES as provinces
+from bot_service.utils.constant import PROVINCES
 
 
 def filter_menu_keyboard():
@@ -22,7 +20,7 @@ def filter_menu_keyboard():
     return keyboard.as_markup()
 
 
-def contract_type_keyboard(selected: list[str] = None, with_done: bool = True):
+def contract_type_keyboard(selected: list[str] | None = None, with_done: bool = True):
     selected = selected or []
     options = [
         ("تمام‌وقت", "full"),
@@ -48,7 +46,7 @@ def remote_type_keyboard():
     return keyboard.as_markup()
 
 
-def level_keyboard(selected: list[str] = None, with_done: bool = True):
+def level_keyboard(selected: list[str] | None = None, with_done: bool = True):
     selected = selected or []
     levels = [("Junior", "junior"), ("Mid", "mid"), ("Senior", "senior")]
     keyboard = InlineKeyboardBuilder()
@@ -62,12 +60,12 @@ def level_keyboard(selected: list[str] = None, with_done: bool = True):
 
 
 def get_province_keyboard(
-    page=0, per_page=6, selected: list[str] = None, with_done=True
+    selected: list[str] | None = None, page=0, per_page=6, with_done=True
 ):
     selected = selected or []
     start = page * per_page
     end = start + per_page
-    current_page = provinces[start:end]
+    current_page = PROVINCES[start:end]
 
     keyboard = [
         [
@@ -86,7 +84,7 @@ def get_province_keyboard(
                 text="⬅️ قبلی", callback_data=f"province_page:{page - 1}"
             )
         )
-    if end < len(provinces):
+    if end < len(PROVINCES):
         nav_buttons.append(
             InlineKeyboardButton(
                 text="➡️ بعدی", callback_data=f"province_page:{page + 1}"

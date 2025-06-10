@@ -6,8 +6,10 @@ down:
 	docker compose down
 down-v:
 	docker compose down -v
-api-logs:
+django-logs:
 	docker logs -f django-api
+fastapi-logs:
+	docker logs -f fastapi
 shell:
 	docker exec -it django-api python manage.py shell_plus
 makemigrations:
