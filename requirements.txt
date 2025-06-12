@@ -35,3 +35,4 @@ django-celery-beat
 requests
 beautifulsoup4
 lxml
+selenium
