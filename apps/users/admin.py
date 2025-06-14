@@ -11,4 +11,3 @@ class TelegramUserAdmin(admin.ModelAdmin):
         "telegram_id",
         "username",
     )
-    filter_horizontal = ("skills",)

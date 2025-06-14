@@ -1,7 +1,6 @@
 from django.db import models
 
 from apps.core.models import TimeStampedModel
-from apps.jobs.models import Skill
 
 
 class TelegramUser(TimeStampedModel):
@@ -13,7 +12,7 @@ class TelegramUser(TimeStampedModel):
     telegram_id = models.BigIntegerField(unique=True)
     username = models.CharField(max_length=150, blank=True, null=True)
     title = models.CharField(max_length=255, blank=True, null=True)
-    skills = models.ManyToManyField(Skill, blank=True)
+    skills = models.JSONField(blank=True, null=True)
     province = models.JSONField(default=list, blank=True)
     remote_only = models.BooleanField(default=False)
     job_types = models.JSONField(default=list, blank=True)

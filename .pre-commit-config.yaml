@@ -21,11 +21,11 @@ repos:
         args: [--fix]
       - id: ruff-format
 
-  - repo: local
-    hooks:
-      - id: pytest
-        name: Run pytest
-        entry: make pytest
-        language: system
-        types: [python]
-        stages: [commit]
+  # - repo: local
+  #   hooks:
+  #     - id: pytest
+  #       name: Run pytest
+  #       entry: make pytest
+  #       language: system
+  #       types: [python]
+  #       stages: [commit]

@@ -36,3 +36,4 @@ requests
 beautifulsoup4
 lxml
 selenium
+beautifulsoup4

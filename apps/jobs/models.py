@@ -3,17 +3,6 @@ from django.db import models
 from apps.core.models import Province, TimeStampedModel
 
 
-class Skill(models.Model):
-    name = models.CharField(max_length=50, unique=True)
-    slug = models.SlugField(max_length=50, unique=True)
-
-    class Meta:
-        ordering = ("name",)
-
-    def __str__(self):
-        return self.name
-
-
 class JobPosting(TimeStampedModel):
     SLARY_TYPE_CHOICES = (
         ("fixed", "قیمت ثابت"),
@@ -55,7 +44,11 @@ class JobPosting(TimeStampedModel):
     posted_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    skills = models.ManyToManyField(Skill, blank=True)
+    skills = models.JSONField(blank=True, null=True)
+
+    military_status = models.CharField(max_length=50, blank=True, null=True)
+    job_url = models.URLField(unique=True)
+    source = models.CharField(max_length=50)
 
     class Meta:
         ordering = ("-posted_at",)
