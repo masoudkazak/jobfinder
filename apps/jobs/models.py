@@ -27,15 +27,6 @@ class JobPosting(TimeStampedModel):
         ],
     )
 
-    seniority_level = models.CharField(
-        max_length=50,
-        choices=[
-            ("junior", "Junior"),
-            ("mid", "Mid"),
-            ("senior", "Senior"),
-            ("lead", "Lead"),
-        ],
-    )
     seniority_level = models.JSONField(blank=True, null=True)
 
     salary = models.PositiveBigIntegerField(blank=True, null=True)

@@ -34,4 +34,4 @@ ENV PATH=/root/.local/bin:$PATH \
     PYTHONUNBUFFERED=1
 
 
-CMD ["uvicorn", "bot_service.main:app", "--host", "0.0.0.0", "--port", "8001"]
+CMD ["uvicorn", "bot_service.main:app", "--host", "0.0.0.0", "--port", "8002"]
