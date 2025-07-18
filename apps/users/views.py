@@ -1,9 +1,8 @@
-from rest_framework.generics import GenericAPIView
-from rest_framework.generics import RetrieveAPIView
+from rest_framework.generics import GenericAPIView, RetrieveAPIView
+
 from .mixins import TelegramUserCreateUpdateRetrieveMixin
-from .serializers import TelegramUserSerializer
 from .models import TelegramUser
-from django_filters.rest_framework import DjangoFilterBackend
+from .serializers import TelegramUserSerializer
 
 
 class TelegramUserCreateUpdateRetrieveView(
