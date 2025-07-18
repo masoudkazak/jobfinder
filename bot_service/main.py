@@ -6,10 +6,12 @@ from decouple import config
 from fastapi import FastAPI
 
 from .handlers.filters import filter_router
+from .handlers.search import search_router
 
 bot = Bot(token=config("BOTFATHER_API_TOKEN"))
 dp = Dispatcher()
 dp.include_router(filter_router)
+dp.include_router(search_router)
 
 
 @asynccontextmanager

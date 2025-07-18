@@ -23,10 +23,10 @@ def filter_menu_keyboard():
 def contract_type_keyboard(selected: list[str] | None = None, with_done: bool = True):
     selected = selected or []
     options = [
-        ("تمام‌وقت", "full"),
-        ("پاره‌وقت", "part"),
-        ("پروژه‌ای", "project"),
-        ("کارآموزی", "intern"),
+        ("تمام‌وقت", "full_time"),
+        ("پاره‌وقت", "part_time"),
+        ("پروژه‌ای", "contract"),
+        ("کارآموزی", "internship"),
     ]
     keyboard = InlineKeyboardBuilder()
     for label, key in options:

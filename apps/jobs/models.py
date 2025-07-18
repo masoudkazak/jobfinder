@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.postgres.indexes import GinIndex
 from apps.core.models import Province, TimeStampedModel
 
 
@@ -30,6 +30,7 @@ class JobPosting(TimeStampedModel):
     seniority_level = models.JSONField(blank=True, null=True)
 
     salary = models.PositiveBigIntegerField(blank=True, null=True)
+    base_salary = models.BooleanField(default=False)
     salary_type = models.CharField(
         max_length=20, choices=SLARY_TYPE_CHOICES, default="fixed"
     )
@@ -37,14 +38,13 @@ class JobPosting(TimeStampedModel):
     skills = models.JSONField(blank=True, null=True)
 
     military_status = models.JSONField(blank=True, null=True)
-    source = models.CharField(max_length=50)
 
     class Meta:
         ordering = ("-created_at",)
-        indexes = (
-            models.Index(fields=["title"]),
-            models.Index(fields=["province"]),
-        )
+        indexes = [
+        GinIndex(fields=["title"], name="title_trgm_idx", opclasses=["gin_trgm_ops"]),
+        GinIndex(fields=["description"], name="desc_trgm_idx", opclasses=["gin_trgm_ops"]),
+        ]
 
     def __str__(self):
         return f"{self.title} at {self.company_english}"

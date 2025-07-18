@@ -31,6 +31,8 @@ def parse_info_box(soup, class_name):
 def extract_salary(salary_field):
     if not salary_field or salary_field[0] == "توافقی":
         return "negotiable", None
+    elif salary_field[0] == "حقوق پایه (وزارت کار)":
+        return "fixed", "حقوق پایه (وزارت کار)"
     return "fixed", persian_english_number(salary_field[0])
 
 
@@ -38,7 +40,7 @@ def extract_military(value):
     pass
 
 
-def extract_provinfce(province):
+def extract_province(province):
     return Province.objects.filter(name=province).first()
 
 
@@ -71,11 +73,15 @@ def extract_job_details(driver, wait, url):
         is_remote = "دورکاری" in job_types
         if is_remote:
             job_types.remove("دورکاری")
-
         salary_type, salary = extract_salary(first_info.get("حقوق", []))
-        province = extract_provinfce(
+        base_salary = True if salary == "حقوق پایه (وزارت کار)" else False
+        province = extract_province(
             first_info.get("موقعیت مکانی", [""])[0].split("،")[0].strip()
         )
+        raw_military_status = second_info.get("وضعیت نظام وظیفه", [])
+        military_status = []
+        if isinstance(raw_military_status, list):
+            military_status = [str(item) for item in raw_military_status if item]
 
         data = {
             "title": title,
@@ -95,12 +101,12 @@ def extract_job_details(driver, wait, url):
                 if key in title
             ],
             "salary_type": salary_type,
-            "salary": salary,
+            "base_salary": base_salary,
+            "salary": salary if not salary else None,
             "source": "Jobinja",
             "skills": second_info.get("مهارت های مورد نیاز", []),
-            "military_status": second_info.get("وضعیت نظام وظیفه", [None]),
+            "military_status": military_status,
         }
-        print(data)
         return data
 
     except Exception as e:

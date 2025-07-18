@@ -8,4 +8,5 @@ urlpatterns = [
         views.TelegramUserCreateUpdateRetrieveView.as_view(),
         name="create_update_telegram_user",
     ),
+    path("profile/<int:telegram_id>/", views.MyTelegramProfile.as_view(), name="my-telegram-profile"),
 ]
