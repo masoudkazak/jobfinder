@@ -3,7 +3,6 @@ from django.core.management.base import BaseCommand
 from apps.core.models import Province
 
 PROVINCES = [
-    "همه استان ها",
     "آذربایجان شرقی",
     "آذربایجان غربی",
     "اردبیل",

@@ -1,4 +1,5 @@
 from aiogram import Router
+from aiogram.enums import ParseMode
 from aiogram.filters import Command
 from aiogram.types import Message
 from decouple import config
@@ -35,7 +36,6 @@ async def handle_search_command(message: Message):
                 "skills": user_data["skills"],
             }
             response_jobs = await client.get(job_list_api, params=params)
-            print(response_jobs.request.url)
             jobs_data = response_jobs.json()
             user_filter = format_profile(user_data)
 
@@ -43,7 +43,7 @@ async def handle_search_command(message: Message):
             if not jobs_data:
                 await message.answer("یافت نشد")
             for job_data in jobs_data:
-                await message.answer(format_job(job_data))
+                await message.answer(format_job(job_data), parse_mode=ParseMode.HTML)
 
         except Exception as e:
             print(f"{e}: ine")

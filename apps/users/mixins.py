@@ -17,7 +17,7 @@ class TelegramUserCreateUpdateRetrieveMixin(
             "title": request.data.get("title", None),
             "skills": request.data.get("skills", []),
             "province": request.data.get("province", []),
-            "remote_only": request.data.get("remote", False),
+            "remote_only": request.data.get("remote", None),
             "job_types": request.data.get("contract", []),
             "seniorities": request.data.get("level", []),
             "salary_type": salary_type.get("type", None),

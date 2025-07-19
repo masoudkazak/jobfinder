@@ -102,7 +102,7 @@ def extract_job_details(driver, wait, url):
             ],
             "salary_type": salary_type,
             "base_salary": base_salary,
-            "salary": salary if not salary else None,
+            "salary": salary if not base_salary else None,
             "source": "Jobinja",
             "skills": second_info.get("مهارت های مورد نیاز", []),
             "military_status": military_status,

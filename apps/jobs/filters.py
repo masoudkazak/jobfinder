@@ -10,7 +10,7 @@ from .models import JobPosting
 class JobFilter(django_filters.FilterSet):
     skills = django_filters.CharFilter(method="filter_skills")
     seniority_level = django_filters.CharFilter(method="filter_seniority")
-    provinces = django_filters.CharFilter(method="filter_by_province_names")
+    province = django_filters.CharFilter(method="filter_by_province_names")
     min_salary = django_filters.NumberFilter(field_name="salary", lookup_expr="gte")
     max_salary = django_filters.NumberFilter(field_name="salary", lookup_expr="lte")
     title = django_filters.CharFilter(method="filter_title_similarity")
@@ -28,6 +28,7 @@ class JobFilter(django_filters.FilterSet):
             "salary",
             "salary_type",
             "skills",
+            "province",
         )
 
     def parse_list(self, value):
@@ -55,7 +56,9 @@ class JobFilter(django_filters.FilterSet):
         return queryset.filter(query)
 
     def filter_by_province_names(self, queryset, name, value):
-        provinces = self.request.GET.getlist("provinces") or self.parse_list(value)
+        provinces = self.request.GET.getlist("province") or self.parse_list(value)
+        if "همه استان ها" in provinces:
+            return queryset
         return queryset.filter(province__name__in=provinces)
 
     def filter_title_similarity(self, queryset, name, value):

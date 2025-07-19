@@ -86,7 +86,7 @@ async def select_remote(callback: types.CallbackQuery, state: FSMContext):
     if value == "yes":
         value = True
     elif value == "no":
-        value = False
+        value = None
 
     await state.update_data(remote=value)
     await callback.answer(

@@ -14,7 +14,7 @@ class TelegramUser(TimeStampedModel):
     title = models.CharField(max_length=255, blank=True, null=True)
     skills = models.JSONField(blank=True, null=True)
     province = models.JSONField(default=list, blank=True)
-    remote_only = models.BooleanField(default=False)
+    remote_only = models.BooleanField(blank=True, null=True)
     job_types = models.JSONField(default=list, blank=True)
     seniorities = models.JSONField(default=list, blank=True)
     min_salary = models.PositiveBigIntegerField(blank=True, null=True)

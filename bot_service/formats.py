@@ -1,4 +1,4 @@
-def format_profile(filters: dict) -> str:
+def format_profile(filters: dict) -> str:  # noqa: C901
     lines = ["🔎فیلترهای جستجوی شما:\n"]
 
     if filters.get("title"):
@@ -109,15 +109,15 @@ def format_job(job: dict) -> str:
     )
 
     return f"""📋 عنوان شغلی: {title}
-            🏢 شرکت: {company}
-            🧩 نوع همکاری: {job_type}
-            📈 سطح ارشدیت: {seniority}
-            🗺️ استان: {province}
-            💰 حقوق: {salary_display}
-            🛠️ مهارت‌ها: {skills}
-            🏠 دورکاری: {is_remote}
-            🪖 وضعیت نظام‌وظیفه: {military_status}
-            📡 منبع انتشار: {source}
-            📝 توضیحات: {description_summary}
-            🔗 لینک: {url}
-            """
+🏢 شرکت: {company}
+🧩 نوع همکاری: {job_type}
+📈 سطح ارشدیت: {seniority}
+🗺️ استان: {province}
+💰 حقوق: {salary_display}
+🛠️ مهارت‌ها: {skills}
+🏠 دورکاری: {is_remote}
+🪖 وضعیت نظام‌وظیفه: {military_status}
+📡 منبع انتشار: {source}
+📝 توضیحات: {description_summary}
+🔗 لینک: <a href="{url}">مشاهده</a>
+"""
