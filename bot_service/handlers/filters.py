@@ -1,3 +1,5 @@
+import logging
+
 from aiogram import F, Router, types
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
@@ -6,6 +8,8 @@ import httpx
 
 from ..keyboards import filters
 from .states import FilterStates
+
+logger = logging.getLogger(__name__)
 
 filter_router = Router()
 
@@ -289,6 +293,7 @@ async def finalize_filters(callback: types.CallbackQuery, state: FSMContext):
 
 async def save_user_filter_to_db(user_data: dict, filters: dict):
     async with httpx.AsyncClient() as client:
+        logger.info(f"---{user_data}---: {filters}")
         await client.post(
             f"{config('DJANGO_API_URL')}/api/users/create-update-telegram-user/",
             json=user_data | filters,
