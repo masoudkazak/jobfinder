@@ -1,3 +1,5 @@
+import logging
+
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC  # noqa: N812
@@ -9,6 +11,8 @@ from apps.jobs.jobinja.job_posting_converter import (
     persian_english_number,
     seniority_level_mapping,
 )
+
+logger = logging.getLogger(__name__)
 
 
 def parse_info_box(soup, class_name):
@@ -107,7 +111,8 @@ def extract_job_details(driver, wait, url):
             "skills": second_info.get("مهارت های مورد نیاز", []),
             "military_status": military_status,
         }
+        logger.info(data)
         return data
 
     except Exception as e:
-        print(f"❌ خطا در جزئیات {url}: {e}")
+        logger.error(f"{url}: {e}")

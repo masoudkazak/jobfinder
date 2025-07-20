@@ -1,3 +1,5 @@
+import logging
+
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
@@ -10,9 +12,11 @@ from celery import shared_task
 
 from .models import JobPosting
 
+logger = logging.getLogger(__name__)
 
-@shared_task
-def jobinja_scraper_task():
+
+@shared_task(bind=True, max_retries=5, default_retry_delay=60)
+def jobinja_scraper_task(self):
     options = Options()
     options.add_argument("--headless")
     options.add_argument("--no-sandbox")
@@ -30,6 +34,10 @@ def jobinja_scraper_task():
         data = [
             JobPosting(**extract_job_details(driver, wait, link)) for link in job_links
         ]
+
+    except Exception as exc:
+        logger.error(exc)
+        raise self.retry(exc=exc) from exc
 
     finally:
         driver.quit()

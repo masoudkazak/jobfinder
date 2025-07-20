@@ -1,6 +1,10 @@
+import logging
+
 from decouple import config
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC  # noqa: N812
+
+logger = logging.getLogger(__name__)
 
 
 def login(driver, wait):
@@ -16,8 +20,8 @@ def login(driver, wait):
                 (By.CSS_SELECTOR, ".c-nav2AccountManager__toggleLabel")
             )
         )
-        print("✅ ورود موفق بود")
+        logger.info("✅ ورود موفق بود")
         return True
     except Exception as e:
-        print(f"❌ ورود ناموفق بود: {e}")
+        logger.error(f"❌ ورود ناموفق بود: {e}")
         return False

@@ -1,6 +1,10 @@
+import logging
+
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC  # noqa: N812
+
+logger = logging.getLogger(__name__)
 
 
 def get_today_job_links(driver, wait):
@@ -25,5 +29,5 @@ def get_today_job_links(driver, wait):
             else:
                 break
         except Exception as e:
-            print(f"❌ خطا در لینک: {e}")
+            logger.error(f"❌ خطا در لینک: {e}")
     return links
