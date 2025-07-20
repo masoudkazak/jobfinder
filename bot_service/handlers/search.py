@@ -24,6 +24,7 @@ async def handle_search_command(message: Message):
                 return
             user_data = response_profile.json()
             params = {
+                "telegram_id": user_id,
                 "title": user_data["title"],
                 "province": user_data["province"],
                 "is_remote": user_data["remote_only"],
